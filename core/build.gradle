@@ -4,8 +4,9 @@ eclipse.project.name = appName + '-core'
 dependencies {
   api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
-  api "com.github.MrStahlfelge.gdx-websockets:core:$websocketVersion"
   api "com.kotcrab.vis:vis-ui:$visUiVersion"
   api "org.projectlombok:lombok:$lombokVersion"
+  implementation "org.java-websocket:Java-WebSocket:1.5.3"
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
   annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 }
