@@ -1,8 +1,12 @@
 package pl.prasulakorpo.cyberwarriors.connection.handler;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.joints.FrictionJoint;
+import com.badlogic.gdx.physics.box2d.joints.FrictionJointDef;
 import org.java_websocket.client.WebSocketClient;
 import pl.prasulakorpo.cyberwarriors.connection.message.GeneralMsg;
 import pl.prasulakorpo.cyberwarriors.connection.message.PlayerDTO;
@@ -24,10 +28,21 @@ public class PlayerDTOHandler extends MessageHandler {
         bodyDef.position.set(playerMsg.getX(), playerMsg.getY());
 
         Body body = gameState.getWorld().createBody(bodyDef);
+        body.setFixedRotation(true);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f, 1f);
 
-        gameState.setPlayer(new Player(body.createFixture(shape, 0.5f)));
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1f;
+
+        FrictionJointDef jointDef = new FrictionJointDef();
+        jointDef.maxForce = 1f;
+        jointDef.maxTorque = 1f;
+        jointDef.initialize(body, gameState.getBackground().getBody(), new Vector2(0, 0));
+        FrictionJoint frictionJoint = (FrictionJoint) gameState.getWorld().createJoint(jointDef);
+
+        gameState.setPlayer(new Player(body.createFixture(fixtureDef), frictionJoint));
         shape.dispose();
     }
 

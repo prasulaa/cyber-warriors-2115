@@ -13,6 +13,7 @@ public class GameState {
 
     private World world;
     private Fixture ground;
+    private Fixture background;
     private Player player;
     private float stateTime;
 
