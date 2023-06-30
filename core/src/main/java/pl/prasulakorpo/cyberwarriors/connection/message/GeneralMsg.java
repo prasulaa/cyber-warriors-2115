@@ -14,7 +14,8 @@ import lombok.Setter;
     visible = true
 )
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = PlayerDTO.class, name = PlayerDTO.NAME)
+    @JsonSubTypes.Type(value = PlayerDTO.class, name = PlayerDTO.NAME),
+    @JsonSubTypes.Type(value = WorldInfoDTO.class, name = WorldInfoDTO.NAME)
 })
 @NoArgsConstructor
 @Setter
