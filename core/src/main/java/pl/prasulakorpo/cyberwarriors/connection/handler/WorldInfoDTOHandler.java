@@ -13,7 +13,7 @@ import pl.prasulakorpo.cyberwarriors.model.PlayerFactory;
 import java.util.Map;
 
 public class WorldInfoDTOHandler extends MessageHandler {
-    private static final float IMPULSE = 0.1f;
+    private static final float IMPULSE = 20f;
 
     public WorldInfoDTOHandler(GameState gameState) {
         super(gameState);

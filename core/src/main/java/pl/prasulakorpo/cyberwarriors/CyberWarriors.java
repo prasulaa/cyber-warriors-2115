@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.java.Log;
 import org.java_websocket.client.WebSocketClient;
 import pl.prasulakorpo.cyberwarriors.connection.ConnectionClient;
+import pl.prasulakorpo.cyberwarriors.connection.MessageSender;
 import pl.prasulakorpo.cyberwarriors.connection.handler.MessageHandlerRepository;
 import pl.prasulakorpo.cyberwarriors.input.InputHandler;
 import pl.prasulakorpo.cyberwarriors.model.GameProperties;
@@ -32,6 +33,7 @@ public class CyberWarriors extends ApplicationAdapter {
     private GameState gameState;
     private WebSocketClient client;
     private InputHandler inputHandler;
+    private MessageSender messageSender;
 
 
     @Override
@@ -52,6 +54,7 @@ public class CyberWarriors extends ApplicationAdapter {
             URI uri = new URI("ws://192.168.1.67:8080/servers/" + SERVER_ID);
             client = new ConnectionClient(uri, new ObjectMapper(), new MessageHandlerRepository(gameState));
             client.connect();
+            messageSender = new MessageSender(client, new ObjectMapper());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -86,6 +89,8 @@ public class CyberWarriors extends ApplicationAdapter {
         inputHandler.handlePressedKeys();
 
 		doPhysicsStep(Gdx.graphics.getDeltaTime());
+
+        messageSender.sendPlayerState(gameState.getPlayer());
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import lombok.AllArgsConstructor;
 import pl.prasulakorpo.cyberwarriors.model.GameProperties;
 import pl.prasulakorpo.cyberwarriors.model.GameState;
+import pl.prasulakorpo.cyberwarriors.model.Player;
 
 @AllArgsConstructor
 public class InputHandler extends InputAdapter {
@@ -61,6 +62,10 @@ public class InputHandler extends InputAdapter {
     }
 
     private void moveSide(float impulse) {
+        if (gameState.getPlayer() == null) {
+            return;
+        }
+
         Body body = gameState.getPlayer().getFixture().getBody();
         body.applyLinearImpulse(new Vector2(impulse, 0), body.getPosition(), true);
 
