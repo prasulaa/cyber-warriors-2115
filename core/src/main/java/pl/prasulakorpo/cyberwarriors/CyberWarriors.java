@@ -13,6 +13,7 @@ import org.java_websocket.client.WebSocketClient;
 import pl.prasulakorpo.cyberwarriors.connection.ConnectionClient;
 import pl.prasulakorpo.cyberwarriors.connection.MessageSender;
 import pl.prasulakorpo.cyberwarriors.connection.handler.MessageHandlerRepository;
+import pl.prasulakorpo.cyberwarriors.drawing.DrawableManager;
 import pl.prasulakorpo.cyberwarriors.input.InputHandler;
 import pl.prasulakorpo.cyberwarriors.model.GameProperties;
 import pl.prasulakorpo.cyberwarriors.model.GameState;
@@ -38,8 +39,8 @@ public class CyberWarriors extends ApplicationAdapter {
 
     @Override
 	public void create () {
-		HEIGHT = 720;//Gdx.graphics.getHeight();
-		WIDTH = 1280;//Gdx.graphics.getWidth();
+		HEIGHT = 240;//Gdx.graphics.getHeight();
+		WIDTH = 400;//Gdx.graphics.getWidth();
 
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -49,6 +50,8 @@ public class CyberWarriors extends ApplicationAdapter {
 
 		gameState.setWorld(new World(new Vector2(0, -20), true));
 		debugRenderer = new Box2DDebugRenderer();
+
+        gameState.setDrawableManager(new DrawableManager());
 
         try {
             URI uri = new URI("ws://192.168.1.67:8080/servers/" + SERVER_ID);
@@ -66,11 +69,11 @@ public class CyberWarriors extends ApplicationAdapter {
 		createGround();
 		createWallLeft();
 		createWallRight();
-        createPlatform(10f, 3f, 2f, 0.5f);
-        createPlatform(20f, 5f, 2f, 0.5f);
-        createPlatform(30f, 7f, 2f, 0.5f);
-        createPlatform(37f, 8f, 1f, 0.5f);
-        createPlatform(49f, 11f, 2f, 0.5f);
+//        createPlatform(10f, 3f, 2f, 0.5f);
+//        createPlatform(20f, 5f, 2f, 0.5f);
+//        createPlatform(30f, 7f, 2f, 0.5f);
+//        createPlatform(37f, 8f, 1f, 0.5f);
+//        createPlatform(49f, 11f, 2f, 0.5f);
 	}
 
 	@Override
@@ -82,9 +85,9 @@ public class CyberWarriors extends ApplicationAdapter {
 		ScreenUtils.clear(0, 0, 0, 1);
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-
+        gameState.getDrawableManager().draw(batch, gameState.getStateTime());
 		batch.end();
-		debugRenderer.render(gameState.getWorld(), camera.combined.scl(PPM));
+//		debugRenderer.render(gameState.getWorld(), camera.combined.scl(PPM));
 
         inputHandler.handlePressedKeys();
 

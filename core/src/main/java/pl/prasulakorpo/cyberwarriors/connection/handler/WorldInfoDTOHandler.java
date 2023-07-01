@@ -6,6 +6,7 @@ import org.java_websocket.client.WebSocketClient;
 import pl.prasulakorpo.cyberwarriors.connection.message.GeneralMsg;
 import pl.prasulakorpo.cyberwarriors.connection.message.PlayerDTO;
 import pl.prasulakorpo.cyberwarriors.connection.message.WorldInfoDTO;
+import pl.prasulakorpo.cyberwarriors.drawing.DrawableManager;
 import pl.prasulakorpo.cyberwarriors.model.GameState;
 import pl.prasulakorpo.cyberwarriors.model.Player;
 import pl.prasulakorpo.cyberwarriors.model.PlayerFactory;
@@ -33,6 +34,7 @@ public class WorldInfoDTOHandler extends MessageHandler {
             } else {
                 Player player = PlayerFactory.create(playerDTO.getId(), playerDTO.getX(), playerDTO.getY(), gameState);
                 players.put(player.getId(), player);
+                gameState.getDrawableManager().add(player);
             }
         });
     }

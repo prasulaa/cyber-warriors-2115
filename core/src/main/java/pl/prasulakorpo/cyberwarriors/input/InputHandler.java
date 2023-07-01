@@ -23,7 +23,7 @@ public class InputHandler extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.SPACE) {
-            jump(20f, false);
+            jump(10f, false);
             return true;
         }
 
@@ -41,7 +41,7 @@ public class InputHandler extends InputAdapter {
             moveRight();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            jump(0.3f, true);
+            jump(0.2f, true);
         }
     }
 

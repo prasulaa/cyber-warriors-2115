@@ -5,6 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 
 public interface Drawable {
 
+    /**
+     *
+     * @return middle of the object
+     */
     Vector2 getPosition();
     TextureRegion getTextureRegion(float stateTime);
 

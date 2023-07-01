@@ -1,5 +1,6 @@
 package pl.prasulakorpo.cyberwarriors.connection;
 
+import com.badlogic.gdx.Gdx;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.java.Log;
@@ -34,7 +35,7 @@ public class ConnectionClient extends WebSocketClient {
 
         try {
             GeneralMsg msg = mapper.readValue(message, GeneralMsg.class);
-            handlerRepository.messageHandler(msg).handle(msg, this);
+            Gdx.app.postRunnable(() -> handlerRepository.messageHandler(msg).handle(msg, this));
         } catch (JsonProcessingException e) {
             log.log(Level.INFO, "Exception occurred during message mapping", e);
         }
