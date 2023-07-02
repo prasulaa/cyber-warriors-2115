@@ -2,11 +2,22 @@ package pl.prasulakorpo.cyberwarriors;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.java.Log;
 import org.java_websocket.client.WebSocketClient;
@@ -15,36 +26,42 @@ import pl.prasulakorpo.cyberwarriors.connection.MessageSender;
 import pl.prasulakorpo.cyberwarriors.connection.handler.MessageHandlerRepository;
 import pl.prasulakorpo.cyberwarriors.drawing.DrawableManager;
 import pl.prasulakorpo.cyberwarriors.input.InputHandler;
+import pl.prasulakorpo.cyberwarriors.input.MobileControllerUI;
 import pl.prasulakorpo.cyberwarriors.model.GameProperties;
 import pl.prasulakorpo.cyberwarriors.model.GameState;
 import pl.prasulakorpo.cyberwarriors.model.Player;
+import pl.prasulakorpo.cyberwarriors.model.TexturePaths;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Random;
 
 import static pl.prasulakorpo.cyberwarriors.model.GameProperties.*;
+import static pl.prasulakorpo.cyberwarriors.model.TexturePaths.*;
 
 @Log
 public class CyberWarriors extends ApplicationAdapter {
 
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
+    private Viewport viewport;
 	private Box2DDebugRenderer debugRenderer;
     private GameState gameState;
     private WebSocketClient client;
     private InputHandler inputHandler;
     private MessageSender messageSender;
+    private Stage stage;
 
 
     @Override
 	public void create () {
-		HEIGHT = 240;//Gdx.graphics.getHeight();
-		WIDTH = 400;//Gdx.graphics.getWidth();
+		HEIGHT = 144;//Gdx.graphics.getHeight(); 9*16 //TODO
+		WIDTH = 256;//Gdx.graphics.getWidth(); 16*16 + obramowanie konca swiata
 
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
+        viewport = new FitViewport(WIDTH, HEIGHT, camera);
 
         gameState = new GameState();
 
@@ -63,36 +80,46 @@ public class CyberWarriors extends ApplicationAdapter {
         }
 
         inputHandler = new InputHandler(gameState);
-        Gdx.input.setInputProcessor(inputHandler);
+        stage = MobileControllerUI.createStage(inputHandler);
+        Gdx.input.setInputProcessor(stage);
 
         createBackgroundFixture();
 		createGround();
 		createWallLeft();
 		createWallRight();
-//        createPlatform(10f, 3f, 2f, 0.5f);
-//        createPlatform(20f, 5f, 2f, 0.5f);
-//        createPlatform(30f, 7f, 2f, 0.5f);
-//        createPlatform(37f, 8f, 1f, 0.5f);
-//        createPlatform(49f, 11f, 2f, 0.5f);
+        createPlatform(5f, 2f, 1.5f, 0.5f);
+        createPlatform(12f, 4f, 2f, 0.5f);
 	}
 
-	@Override
+
+    @Override
 	public void render () {
 		gameState.updateStateTime(Gdx.graphics.getDeltaTime());
 
 		// GRAPHICS
 		camera.update();
 		ScreenUtils.clear(0, 0, 0, 1);
+
+        // UI
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+
+        // DRAWABLE
 		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
+
+        batch.begin();
         gameState.getDrawableManager().draw(batch, gameState.getStateTime());
 		batch.end();
-//		debugRenderer.render(gameState.getWorld(), camera.combined.scl(PPM));
 
+		debugRenderer.render(gameState.getWorld(), camera.combined.scl(PPM));
+
+        // INPUT
         inputHandler.handlePressedKeys();
 
+        // PHYSICS
 		doPhysicsStep(Gdx.graphics.getDeltaTime());
 
+        // COMMUNICATION
         messageSender.sendPlayerState(gameState.getPlayer());
 	}
 
@@ -100,6 +127,7 @@ public class CyberWarriors extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
         client.close();
+        stage.dispose();
 	}
 
 	private void doPhysicsStep(float deltaTime) {

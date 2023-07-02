@@ -3,27 +3,37 @@ package pl.prasulakorpo.cyberwarriors.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import lombok.AllArgsConstructor;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import lombok.RequiredArgsConstructor;
 import pl.prasulakorpo.cyberwarriors.model.GameProperties;
 import pl.prasulakorpo.cyberwarriors.model.GameState;
-import pl.prasulakorpo.cyberwarriors.model.Player;
+import pl.prasulakorpo.cyberwarriors.model.TexturePaths;
 
-@AllArgsConstructor
+import static pl.prasulakorpo.cyberwarriors.model.GameProperties.WIDTH;
+
+@RequiredArgsConstructor
 public class InputHandler extends InputAdapter {
 
     private static final float IMPULSE = 1.5f;
+    private static final float JUMP_IMPULSE = 10f;
     private static final float MAX_VELOCITY = 5f;
 
     private final GameState gameState;
 
-
-
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.SPACE) {
-            jump(10f, false);
+            jump(JUMP_IMPULSE, false);
             return true;
         }
 

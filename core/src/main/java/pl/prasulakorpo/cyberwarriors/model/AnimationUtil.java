@@ -15,14 +15,4 @@ public class AnimationUtil {
         return animation;
     }
 
-    public static class Paths {
-        public static final String STANDING_POSE_LEFT = "STANDING_POSE_LEFT.png";
-        public static final String STANDING_POSE_RIGHT = "STANDING_POSE_RIGHT.png";
-        public static final String RUN_LEFT = "RUN_LEFT.png";
-        public static final String RUN_RIGHT = "RUN_RIGHT.png";
-        public static final String JUMP_UP_LEFT = "JUMP_UP_LEFT.png";
-        public static final String JUMP_UP_RIGHT = "JUMP_UP_RIGHT.png";
-        public static final String JUMP_DOWN_LEFT = "JUMP_DOWN_LEFT.png";
-        public static final String JUMP_DOWN_RIGHT = "JUMP_DOWN_RIGHT.png";
-    }
 }

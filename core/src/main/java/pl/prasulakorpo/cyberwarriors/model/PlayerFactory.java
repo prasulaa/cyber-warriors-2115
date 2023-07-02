@@ -49,14 +49,14 @@ public class PlayerFactory {
 
     private static PlayerAnimations loadAnimations() {
         return new PlayerAnimations(
-            AnimationUtil.load(AnimationUtil.Paths.STANDING_POSE_LEFT, 0.25f, 1, Animation.PlayMode.LOOP),
-            AnimationUtil.load(AnimationUtil.Paths.STANDING_POSE_RIGHT, 0.25f, 1, Animation.PlayMode.LOOP),
-            AnimationUtil.load(AnimationUtil.Paths.RUN_LEFT, 0.25f, 4, Animation.PlayMode.LOOP),
-            AnimationUtil.load(AnimationUtil.Paths.RUN_RIGHT, 0.25f, 4, Animation.PlayMode.LOOP),
-            AnimationUtil.load(AnimationUtil.Paths.JUMP_UP_LEFT, 0.5f, 2, Animation.PlayMode.NORMAL),
-            AnimationUtil.load(AnimationUtil.Paths.JUMP_UP_RIGHT, 0.5f, 2, Animation.PlayMode.NORMAL),
-            AnimationUtil.load(AnimationUtil.Paths.JUMP_DOWN_LEFT, 0.25f, 1, Animation.PlayMode.NORMAL),
-            AnimationUtil.load(AnimationUtil.Paths.JUMP_DOWN_RIGHT, 0.25f, 1, Animation.PlayMode.NORMAL)
+            AnimationUtil.load(TexturePaths.STANDING_POSE_LEFT, 0.25f, 1, Animation.PlayMode.LOOP),
+            AnimationUtil.load(TexturePaths.STANDING_POSE_RIGHT, 0.25f, 1, Animation.PlayMode.LOOP),
+            AnimationUtil.load(TexturePaths.RUN_LEFT, 0.25f, 4, Animation.PlayMode.LOOP),
+            AnimationUtil.load(TexturePaths.RUN_RIGHT, 0.25f, 4, Animation.PlayMode.LOOP),
+            AnimationUtil.load(TexturePaths.JUMP_UP_LEFT, 0.5f, 2, Animation.PlayMode.NORMAL),
+            AnimationUtil.load(TexturePaths.JUMP_UP_RIGHT, 0.5f, 2, Animation.PlayMode.NORMAL),
+            AnimationUtil.load(TexturePaths.JUMP_DOWN_LEFT, 0.25f, 1, Animation.PlayMode.NORMAL),
+            AnimationUtil.load(TexturePaths.JUMP_DOWN_RIGHT, 0.25f, 1, Animation.PlayMode.NORMAL)
         );
     }
 
