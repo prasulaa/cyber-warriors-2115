@@ -23,6 +23,6 @@ public class TexturePaths {
     public static final String RUN_RIGHT = "player/RUN_RIGHT.png";
     public static final String JUMP_UP_LEFT = "player/JUMP_UP_LEFT.png";
     public static final String JUMP_UP_RIGHT = "player/JUMP_UP_RIGHT.png";
-    public static final String JUMP_DOWN_LEFT = "player/jUMP_DOWN_LEFT.png";
+    public static final String JUMP_DOWN_LEFT = "player/JUMP_DOWN_LEFT.png";
     public static final String JUMP_DOWN_RIGHT = "player/JUMP_DOWN_RIGHT.png";
 }

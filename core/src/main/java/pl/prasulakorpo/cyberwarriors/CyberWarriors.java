@@ -100,10 +100,6 @@ public class CyberWarriors extends ApplicationAdapter {
 		camera.update();
 		ScreenUtils.clear(0, 0, 0, 1);
 
-        // UI
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
-
         // DRAWABLE
 		batch.setProjectionMatrix(camera.combined);
 
@@ -111,7 +107,11 @@ public class CyberWarriors extends ApplicationAdapter {
         gameState.getDrawableManager().draw(batch, gameState.getStateTime());
 		batch.end();
 
-		debugRenderer.render(gameState.getWorld(), camera.combined.scl(PPM));
+        debugRenderer.render(gameState.getWorld(), camera.combined.scl(PPM));
+
+        // UI
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
 
         // INPUT
         inputHandler.handlePressedKeys();

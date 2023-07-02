@@ -22,7 +22,7 @@ import pl.prasulakorpo.cyberwarriors.model.TexturePaths;
 import static pl.prasulakorpo.cyberwarriors.model.GameProperties.WIDTH;
 
 @RequiredArgsConstructor
-public class InputHandler extends InputAdapter {
+public class InputHandler extends InputListener {
 
     private static final float IMPULSE = 1.5f;
     private static final float JUMP_IMPULSE = 10f;
@@ -30,11 +30,44 @@ public class InputHandler extends InputAdapter {
 
     private final GameState gameState;
 
+    private boolean isLeftPressed, isRightPressed, isJumpPressed;
+
     @Override
-    public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.SPACE) {
-            jump(JUMP_IMPULSE, false);
-            return true;
+    public boolean keyDown(InputEvent event, int keycode) {
+        switch (keycode) {
+            case Input.Keys.A -> {
+                isLeftPressed = true;
+                return true;
+            }
+            case Input.Keys.D -> {
+                isRightPressed = true;
+                return true;
+            }
+            case Input.Keys.SPACE -> {
+                jump(JUMP_IMPULSE, false);
+                isJumpPressed = true;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(InputEvent event, int keycode) {
+        switch (keycode) {
+            case Input.Keys.A -> {
+                isLeftPressed = false;
+                return true;
+            }
+            case Input.Keys.D -> {
+                isRightPressed = false;
+                return true;
+            }
+            case Input.Keys.SPACE -> {
+                isJumpPressed = false;
+                return true;
+            }
         }
 
         return false;
@@ -44,13 +77,13 @@ public class InputHandler extends InputAdapter {
      * Checks if certain keys are pressed and if so handles them
      */
     public void handlePressedKeys() {
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (isLeftPressed) {
             moveLeft();
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (isRightPressed) {
             moveRight();
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (isJumpPressed) {
             jump(0.2f, true);
         }
     }
