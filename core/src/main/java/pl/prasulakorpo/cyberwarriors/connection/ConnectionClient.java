@@ -31,7 +31,7 @@ public class ConnectionClient extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        log.log(Level.INFO, "Message received - " + message);
+//        log.log(Level.INFO, "Message received - " + message);
 
         try {
             GeneralMsg msg = mapper.readValue(message, GeneralMsg.class);
