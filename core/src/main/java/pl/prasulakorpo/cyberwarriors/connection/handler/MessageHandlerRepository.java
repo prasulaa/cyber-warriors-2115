@@ -2,6 +2,8 @@ package pl.prasulakorpo.cyberwarriors.connection.handler;
 
 import pl.prasulakorpo.cyberwarriors.connection.message.GeneralMsg;
 import pl.prasulakorpo.cyberwarriors.connection.message.PlayerDTO;
+import pl.prasulakorpo.cyberwarriors.connection.message.WorldInfoDTO;
+import pl.prasulakorpo.cyberwarriors.drawing.DrawableManager;
 import pl.prasulakorpo.cyberwarriors.model.GameState;
 
 import java.util.HashMap;
@@ -14,6 +16,7 @@ public class MessageHandlerRepository {
     public MessageHandlerRepository(GameState gameState) {
         this.handlers = new HashMap<>();
         handlers.put(PlayerDTO.NAME, new PlayerDTOHandler(gameState));
+        handlers.put(WorldInfoDTO.NAME, new WorldInfoDTOHandler(gameState));
     }
 
     public MessageHandler messageHandler(GeneralMsg msg) {

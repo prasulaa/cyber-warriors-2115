@@ -5,6 +5,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.prasulakorpo.cyberwarriors.drawing.DrawableManager;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @NoArgsConstructor
 @Setter
@@ -13,8 +19,11 @@ public class GameState {
 
     private World world;
     private Fixture ground;
+    private Fixture background;
     private Player player;
+    private Map<String, Player> players = new HashMap<>();
     private float stateTime;
+    private DrawableManager drawableManager;
 
     public void updateStateTime(float time) {
         stateTime += time;

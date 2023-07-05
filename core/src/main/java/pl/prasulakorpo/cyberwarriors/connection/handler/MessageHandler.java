@@ -3,6 +3,7 @@ package pl.prasulakorpo.cyberwarriors.connection.handler;
 import lombok.AllArgsConstructor;
 import org.java_websocket.client.WebSocketClient;
 import pl.prasulakorpo.cyberwarriors.connection.message.GeneralMsg;
+import pl.prasulakorpo.cyberwarriors.drawing.DrawableManager;
 import pl.prasulakorpo.cyberwarriors.model.GameState;
 
 @AllArgsConstructor
