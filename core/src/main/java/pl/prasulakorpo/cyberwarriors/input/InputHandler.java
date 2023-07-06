@@ -1,36 +1,27 @@
 package pl.prasulakorpo.cyberwarriors.input;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import lombok.RequiredArgsConstructor;
 import pl.prasulakorpo.cyberwarriors.model.GameProperties;
 import pl.prasulakorpo.cyberwarriors.model.GameState;
-import pl.prasulakorpo.cyberwarriors.model.TexturePaths;
-
-import static pl.prasulakorpo.cyberwarriors.model.GameProperties.WIDTH;
 
 @RequiredArgsConstructor
 public class InputHandler extends InputListener {
 
-    private static final float IMPULSE = 1.5f;
+    private static final float IMPULSE = 0.75f;
     private static final float JUMP_IMPULSE = 10f;
+    private static final float JUMP_HIGHER_IMPULSE = 0.23f;
     private static final float MAX_VELOCITY = 5f;
+    private static final long JUMP_COOLDOWN_AFTER = 750;
 
     private final GameState gameState;
 
     private boolean isLeftPressed, isRightPressed, isJumpPressed;
+    private long lastTimeJump = System.currentTimeMillis();
 
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
@@ -44,7 +35,8 @@ public class InputHandler extends InputListener {
                 return true;
             }
             case Input.Keys.SPACE -> {
-                jump(JUMP_IMPULSE, false);
+                jumpImpulse();
+                lastTimeJump = System.currentTimeMillis();
                 isJumpPressed = true;
                 return true;
             }
@@ -84,15 +76,23 @@ public class InputHandler extends InputListener {
             moveRight();
         }
         if (isJumpPressed) {
-            jump(0.2f, true);
+            jumpHigher();
         }
     }
 
-    private void jump(float impulse, boolean canJumpInAir) {
+    private void jumpHigher() {
         Body body = gameState.getPlayer().getFixture().getBody();
 
-        if (Math.abs(body.getLinearVelocity().y) < GameProperties.ERR || canJumpInAir) {
-            body.applyLinearImpulse(0, impulse, body.getPosition().x, body.getPosition().y, true);
+        if (body.getLinearVelocity().y > GameProperties.ERR && System.currentTimeMillis() - JUMP_COOLDOWN_AFTER < lastTimeJump) {
+            body.applyLinearImpulse(0, JUMP_HIGHER_IMPULSE, body.getPosition().x, body.getPosition().y, true);
+        }
+    }
+
+    private void jumpImpulse() {
+        Body body = gameState.getPlayer().getFixture().getBody();
+
+        if (Math.abs(body.getLinearVelocity().y) < GameProperties.ERR) {
+            body.applyLinearImpulse(0, JUMP_IMPULSE, body.getPosition().x, body.getPosition().y, true);
         }
     }
 

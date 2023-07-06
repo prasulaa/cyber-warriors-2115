@@ -181,7 +181,12 @@ public class CyberWarriors extends ApplicationAdapter {
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width, height);
-        gameState.setGround(groundBody.createFixture(shape, 2f));
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 2f;
+        fixtureDef.friction = 0.07f;
+        gameState.setGround(groundBody.createFixture(fixtureDef));
 
         shape.dispose();
     }
