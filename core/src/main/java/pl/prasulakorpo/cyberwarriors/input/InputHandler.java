@@ -13,10 +13,10 @@ import pl.prasulakorpo.cyberwarriors.model.GameState;
 public class InputHandler extends InputListener {
 
     private static final float IMPULSE = 0.75f;
-    private static final float JUMP_IMPULSE = 10f;
-    private static final float JUMP_HIGHER_IMPULSE = 0.23f;
+    private static final float JUMP_IMPULSE = 9f;
+    private static final float JUMP_HIGHER_IMPULSE = 0.4f;
     private static final float MAX_VELOCITY = 5f;
-    private static final long JUMP_COOLDOWN_AFTER = 750;
+    private static final long JUMP_COOLDOWN_AFTER = 500;
 
     private final GameState gameState;
 
@@ -82,9 +82,12 @@ public class InputHandler extends InputListener {
 
     private void jumpHigher() {
         Body body = gameState.getPlayer().getFixture().getBody();
+        long now = System.currentTimeMillis();
 
-        if (body.getLinearVelocity().y > GameProperties.ERR && System.currentTimeMillis() - JUMP_COOLDOWN_AFTER < lastTimeJump) {
-            body.applyLinearImpulse(0, JUMP_HIGHER_IMPULSE, body.getPosition().x, body.getPosition().y, true);
+        if (body.getLinearVelocity().y > GameProperties.ERR && now - lastTimeJump < JUMP_COOLDOWN_AFTER) {
+            float ratio = 1 - (now - lastTimeJump) / (float) JUMP_COOLDOWN_AFTER;
+            System.out.println(ratio);
+            body.applyLinearImpulse(0, ratio*JUMP_HIGHER_IMPULSE, body.getPosition().x, body.getPosition().y, true);
         }
     }
 

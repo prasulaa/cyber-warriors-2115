@@ -2,7 +2,7 @@ package pl.prasulakorpo.cyberwarriors.model;
 
 public class GameProperties {
 
-    public static final String SERVER_ID = "877f05c980454825a8005c8fc09b4964";
+    public static final String SERVER_ID = "7f870420cc3843c5bf0136f60db8ee0e";
     public static float HEIGHT;
     public static float WIDTH;
     public static final float PPM = 16;
