@@ -52,6 +52,10 @@ public class CyberWarriors extends ApplicationAdapter {
     private MessageSender messageSender;
     private Stage stage;
 
+    public static float getRatio() {
+        return 60f * Gdx.graphics.getDeltaTime();
+    }
+
 
     @Override
 	public void create () {

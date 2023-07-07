@@ -1,11 +1,13 @@
 package pl.prasulakorpo.cyberwarriors.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import lombok.RequiredArgsConstructor;
+import pl.prasulakorpo.cyberwarriors.CyberWarriors;
 import pl.prasulakorpo.cyberwarriors.model.GameProperties;
 import pl.prasulakorpo.cyberwarriors.model.GameState;
 
@@ -85,8 +87,7 @@ public class InputHandler extends InputListener {
         long now = System.currentTimeMillis();
 
         if (body.getLinearVelocity().y > GameProperties.ERR && now - lastTimeJump < JUMP_COOLDOWN_AFTER) {
-            float ratio = 1 - (now - lastTimeJump) / (float) JUMP_COOLDOWN_AFTER;
-            System.out.println(ratio);
+            float ratio = CyberWarriors.getRatio() * (1 - (now - lastTimeJump) / (float) JUMP_COOLDOWN_AFTER);
             body.applyLinearImpulse(0, ratio*JUMP_HIGHER_IMPULSE, body.getPosition().x, body.getPosition().y, true);
         }
     }
@@ -100,11 +101,11 @@ public class InputHandler extends InputListener {
     }
 
     private void moveLeft() {
-        moveSide(-IMPULSE);
+        moveSide(CyberWarriors.getRatio() * -IMPULSE);
     }
 
     private void moveRight() {
-        moveSide(IMPULSE);
+        moveSide(CyberWarriors.getRatio() * IMPULSE);
     }
 
     private void moveSide(float impulse) {
