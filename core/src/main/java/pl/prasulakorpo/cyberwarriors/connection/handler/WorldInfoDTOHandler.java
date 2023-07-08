@@ -2,6 +2,10 @@ package pl.prasulakorpo.cyberwarriors.connection.handler;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.DecompositionSolver;
+import org.apache.commons.math3.linear.LUDecomposition;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.java_websocket.client.WebSocketClient;
 import pl.prasulakorpo.cyberwarriors.connection.message.GeneralMsg;
 import pl.prasulakorpo.cyberwarriors.connection.message.PlayerDTO;
@@ -62,5 +66,54 @@ public class WorldInfoDTOHandler extends MessageHandler {
             );
         }
     }
+
+    public static void main(String[] args) {
+        solveEquations();
+    }
+
+    public static void solveEquations() {
+        double[] x = {-3, 2, 10}; // Wartości x
+        double[] y = {-1, 3, 8}; // Wartości y
+
+        // Tworzenie macierzy A na podstawie wartości x^2, x i stałej
+        double[][] coefficients = new double[x.length][3];
+        for (int i = 0; i < x.length; i++) {
+            coefficients[i][0] = x[i] * x[i];
+            coefficients[i][1] = x[i];
+            coefficients[i][2] = 1;
+        }
+
+        RealMatrix A = new Array2DRowRealMatrix(coefficients, false);
+
+        // Tworzenie wektora b na podstawie wartości y
+        RealMatrix B = new Array2DRowRealMatrix(y);
+
+        // Rozwiązanie układu równań
+        DecompositionSolver solver = new LUDecomposition(A).getSolver();
+        RealMatrix solution = solver.solve(B);
+
+        // Otrzymane wartości a, b, c
+        double a = solution.getEntry(0, 0);
+        double b = solution.getEntry(1, 0);
+        double c = solution.getEntry(2, 0);
+
+        // Wyświetlanie wyników
+        System.out.println("a = " + a);
+        System.out.println("b = " + b);
+        System.out.println("c = " + c);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

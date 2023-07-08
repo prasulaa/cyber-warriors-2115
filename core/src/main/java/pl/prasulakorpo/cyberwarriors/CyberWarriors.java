@@ -21,16 +21,14 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.java.Log;
 import org.java_websocket.client.WebSocketClient;
+import pl.prasulakorpo.cyberwarriors.collision.CollisionListener;
 import pl.prasulakorpo.cyberwarriors.connection.ConnectionClient;
 import pl.prasulakorpo.cyberwarriors.connection.MessageSender;
 import pl.prasulakorpo.cyberwarriors.connection.handler.MessageHandlerRepository;
 import pl.prasulakorpo.cyberwarriors.drawing.DrawableManager;
 import pl.prasulakorpo.cyberwarriors.input.InputHandler;
 import pl.prasulakorpo.cyberwarriors.input.MobileControllerUI;
-import pl.prasulakorpo.cyberwarriors.model.GameProperties;
-import pl.prasulakorpo.cyberwarriors.model.GameState;
-import pl.prasulakorpo.cyberwarriors.model.Player;
-import pl.prasulakorpo.cyberwarriors.model.TexturePaths;
+import pl.prasulakorpo.cyberwarriors.model.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -69,7 +67,10 @@ public class CyberWarriors extends ApplicationAdapter {
 
         gameState = new GameState();
 
-		gameState.setWorld(new World(new Vector2(0, -20), true));
+        World world = new World(new Vector2(0, -20), true);
+		world.setContactListener(new CollisionListener());
+
+        gameState.setWorld(world);
 		debugRenderer = new Box2DDebugRenderer();
 
         gameState.setDrawableManager(new DrawableManager());
@@ -87,12 +88,12 @@ public class CyberWarriors extends ApplicationAdapter {
         stage = MobileControllerUI.createStage(inputHandler);
         Gdx.input.setInputProcessor(stage);
 
-        createBackgroundFixture();
-		createGround();
-		createWallLeft();
-		createWallRight();
-        createPlatform(5f, 2f, 1.5f, 0.5f);
-        createPlatform(12f, 4f, 2f, 0.5f);
+        gameState.setGround(StaticObjectFactory.create(WIDTH/PPM/2, -0.5f, WIDTH/PPM/2, 0.5f, false, gameState.getWorld()));
+        gameState.setBackground(StaticObjectFactory.create(WIDTH/PPM/2, HEIGHT/PPM/2, WIDTH/PPM/2, HEIGHT/PPM/2, false, gameState.getWorld()));
+        gameState.setLeftWall(StaticObjectFactory.create(-0.5f, HEIGHT/PPM/2, 0.5f, HEIGHT/PPM/2, false, gameState.getWorld()));
+        gameState.setRightWall(StaticObjectFactory.create(WIDTH/PPM + 0.5f, HEIGHT/PPM/2, 0.5f, HEIGHT/PPM/2, false, gameState.getWorld()));
+        gameState.getPlatforms().add(StaticObjectFactory.create(5f, 2f, 1.5f, 0.5f, false, world));
+        gameState.getPlatforms().add(StaticObjectFactory.create(12f, 4f, 2f, 0.5f, false, world));
 	}
 
 
@@ -143,75 +144,5 @@ public class CyberWarriors extends ApplicationAdapter {
 			deltaTime -= timeStep;
 		}
 	}
-
-	private void createGround() {
-        createPlatform(WIDTH/PPM/2, -0.5f, WIDTH/PPM/2, 0.5f);
-	}
-
-	private void createWallLeft() {
-		BodyDef groundBodyDef = new BodyDef();
-		groundBodyDef.position.set(-0.5f, WIDTH/PPM/2);
-		groundBodyDef.type = BodyDef.BodyType.StaticBody;
-
-		Body groundBody = gameState.getWorld().createBody(groundBodyDef);
-
-		PolygonShape groundBox = new PolygonShape();
-		groundBox.setAsBox(0.5f, WIDTH);
-		groundBody.createFixture(groundBox, 0.5f);
-
-		groundBox.dispose();
-	}
-
-	private void createWallRight() {
-		BodyDef groundBodyDef = new BodyDef();
-		groundBodyDef.position.set(WIDTH/PPM + 0.6f, WIDTH/PPM/2);
-		groundBodyDef.type = BodyDef.BodyType.StaticBody;
-
-		Body groundBody = gameState.getWorld().createBody(groundBodyDef);
-
-		PolygonShape groundBox = new PolygonShape();
-		groundBox.setAsBox(0.5f, WIDTH);
-		groundBody.createFixture(groundBox, 0.0f);
-
-		groundBox.dispose();
-	}
-
-    private void createPlatform(float posX, float posY, float width, float height) {
-        BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.position.set(posX, posY);
-        groundBodyDef.type = BodyDef.BodyType.StaticBody;
-
-        Body groundBody = gameState.getWorld().createBody(groundBodyDef);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width, height);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 2f;
-        fixtureDef.friction = 0.07f;
-        gameState.setGround(groundBody.createFixture(fixtureDef));
-
-        shape.dispose();
-    }
-
-    private void createBackgroundFixture() {
-        BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.position.set(WIDTH/2/PPM, HEIGHT/2/PPM);
-        groundBodyDef.type = BodyDef.BodyType.StaticBody;
-
-        Body groundBody = gameState.getWorld().createBody(groundBodyDef);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(WIDTH/2/PPM, HEIGHT/2/PPM);
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 0.0f;
-        fixtureDef.isSensor = true;
-
-        gameState.setBackground(groundBody.createFixture(fixtureDef));
-
-        shape.dispose();
-    }
 
 }

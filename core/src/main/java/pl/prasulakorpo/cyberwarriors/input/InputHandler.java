@@ -1,6 +1,5 @@
 package pl.prasulakorpo.cyberwarriors.input;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -10,13 +9,15 @@ import lombok.RequiredArgsConstructor;
 import pl.prasulakorpo.cyberwarriors.CyberWarriors;
 import pl.prasulakorpo.cyberwarriors.model.GameProperties;
 import pl.prasulakorpo.cyberwarriors.model.GameState;
+import pl.prasulakorpo.cyberwarriors.model.Player;
 
 @RequiredArgsConstructor
 public class InputHandler extends InputListener {
 
-    private static final float IMPULSE = 0.75f;
+    private static final float MOVE_IMPULSE = 0.5f;
     private static final float JUMP_IMPULSE = 9f;
     private static final float JUMP_HIGHER_IMPULSE = 0.4f;
+    private static final float JUMP_ON_WALL = 4.5f;
     private static final float MAX_VELOCITY = 5f;
     private static final long JUMP_COOLDOWN_AFTER = 500;
 
@@ -93,19 +94,28 @@ public class InputHandler extends InputListener {
     }
 
     private void jumpImpulse() {
-        Body body = gameState.getPlayer().getFixture().getBody();
+        Player player = gameState.getPlayer();
+        Body body = player.getFixture().getBody();
+
+        if (gameState.getPlayer().isOnWall()) {
+            if (player.isDirectionLeft()) {
+                body.setLinearVelocity(JUMP_ON_WALL, JUMP_IMPULSE);
+            } else {
+                body.setLinearVelocity(-JUMP_ON_WALL, JUMP_IMPULSE);
+            }
+        }
 
         if (Math.abs(body.getLinearVelocity().y) < GameProperties.ERR) {
-            body.applyLinearImpulse(0, JUMP_IMPULSE, body.getPosition().x, body.getPosition().y, true);
+            body.setLinearVelocity(0, JUMP_IMPULSE);
         }
     }
 
     private void moveLeft() {
-        moveSide(CyberWarriors.getRatio() * -IMPULSE);
+        moveSide(CyberWarriors.getRatio() * -MOVE_IMPULSE);
     }
 
     private void moveRight() {
-        moveSide(CyberWarriors.getRatio() * IMPULSE);
+        moveSide(CyberWarriors.getRatio() * MOVE_IMPULSE);
     }
 
     private void moveSide(float impulse) {

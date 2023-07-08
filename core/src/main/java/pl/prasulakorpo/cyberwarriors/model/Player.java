@@ -9,11 +9,13 @@ import com.badlogic.gdx.physics.box2d.joints.FrictionJointDef;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import pl.prasulakorpo.cyberwarriors.drawing.Drawable;
 
 import java.util.Objects;
 
 import static pl.prasulakorpo.cyberwarriors.model.GameProperties.ERR;
+import static pl.prasulakorpo.cyberwarriors.model.GameProperties.PPM;
 
 @RequiredArgsConstructor
 public class Player implements Drawable {
@@ -24,7 +26,11 @@ public class Player implements Drawable {
     private final Fixture fixture;
     private final FrictionJoint frictionJoint;
     private final PlayerAnimations animations;
+    @Getter
     private boolean directionLeft;
+    @Getter
+    @Setter
+    private boolean onWall;
 
     @Override
     public Vector2 getPosition() {
@@ -50,6 +56,18 @@ public class Player implements Drawable {
         return animation.getKeyFrame(stateTime);
     }
 
+    public Vector2 getSize() {
+        return new Vector2(0.5f, 0.5f);
+    }
+
+    private void updateDirection(Vector2 velocity) {
+        if (velocity.x < -ERR) {
+            directionLeft = true;
+        } else if (velocity.x > ERR) {
+            directionLeft = false;
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,14 +78,6 @@ public class Player implements Drawable {
     @Override
     public int hashCode() {
         return id.hashCode();
-    }
-
-    private void updateDirection(Vector2 velocity) {
-        if (velocity.x < -ERR) {
-            directionLeft = true;
-        } else if (velocity.x > ERR) {
-            directionLeft = false;
-        }
     }
 
 }

@@ -12,10 +12,14 @@ public class PlayerFactory {
         Body body = createBody(x, y, gameState.getWorld());
         body.setFixedRotation(true);
 
-        return new Player(id,
+        Player player = new Player(id,
             createFixture(body),
-            createFrictionJoint(body, gameState.getBackground().getBody(), gameState.getWorld()),
+            createFrictionJoint(body, gameState.getBackground().getFixture().getBody(), gameState.getWorld()),
             loadAnimations());
+
+        player.getFixture().setUserData(player);
+
+        return player;
     }
 
     private static Body createBody(float x, float y, World world) {
