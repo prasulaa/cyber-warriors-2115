@@ -2,19 +2,11 @@ package pl.prasulakorpo.cyberwarriors;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -32,10 +24,9 @@ import pl.prasulakorpo.cyberwarriors.model.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Random;
+import java.util.Map;
 
-import static pl.prasulakorpo.cyberwarriors.model.GameProperties.*;
-import static pl.prasulakorpo.cyberwarriors.model.TexturePaths.*;
+import static pl.prasulakorpo.cyberwarriors.GameProperties.*;
 
 @Log
 public class CyberWarriors extends ApplicationAdapter {
@@ -92,13 +83,22 @@ public class CyberWarriors extends ApplicationAdapter {
         gameState.setBackground(StaticObjectFactory.create(WIDTH/PPM/2, HEIGHT/PPM/2, WIDTH/PPM/2, HEIGHT/PPM/2, false, gameState.getWorld()));
         gameState.setLeftWall(StaticObjectFactory.create(-0.5f, HEIGHT/PPM/2, 0.5f, HEIGHT/PPM/2, false, gameState.getWorld()));
         gameState.setRightWall(StaticObjectFactory.create(WIDTH/PPM + 0.5f, HEIGHT/PPM/2, 0.5f, HEIGHT/PPM/2, false, gameState.getWorld()));
-        gameState.getPlatforms().add(StaticObjectFactory.create(5f, 2f, 1.5f, 0.5f, false, world));
-        gameState.getPlatforms().add(StaticObjectFactory.create(12f, 4f, 2f, 0.5f, false, world));
+        gameState.getPlatforms().add(StaticObjectFactory.create(3.5f, 2.5f, 1.5f, 0.5f, false, world));
+        gameState.getPlatforms().add(StaticObjectFactory.create(8f, 2.5f, 1f, 0.5f, false, world));
+        gameState.getPlatforms().add(StaticObjectFactory.create(12.5f, 2.5f, 1.5f, 0.5f, false, world));
+        gameState.getPlatforms().add(StaticObjectFactory.create(3.5f, 6.5f, 0.5f, 0.5f, false, world));
+        gameState.getPlatforms().add(StaticObjectFactory.create(8f, 6.5f, 2f, 0.5f, false, world));
+        gameState.getPlatforms().add(StaticObjectFactory.create(12.5f, 6.5f, 0.5f, 0.5f, false, world));
 	}
 
 
     @Override
 	public void render () {
+        Map.Entry<String, Player> e = gameState.getPlayers().entrySet().stream().findFirst().orElse(null);
+        if (e != null) {
+            System.out.println(e.getValue().getFixture().getBody().getLinearVelocity() + " - " + e.getValue().getFixture().getBody().getPosition());
+        }
+
 		gameState.updateStateTime(Gdx.graphics.getDeltaTime());
 
 		// GRAPHICS
@@ -109,7 +109,7 @@ public class CyberWarriors extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        gameState.getDrawableManager().draw(batch, gameState.getStateTime());
+//        gameState.getDrawableManager().draw(batch, gameState.getStateTime());
 		batch.end();
 
         debugRenderer.render(gameState.getWorld(), camera.combined.scl(PPM));
@@ -126,6 +126,10 @@ public class CyberWarriors extends ApplicationAdapter {
 
         // COMMUNICATION
         messageSender.sendPlayerState(gameState.getPlayer());
+
+        if (e != null) {
+            System.out.println(e.getValue().getFixture().getBody().getLinearVelocity() + " - " + e.getValue().getFixture().getBody().getPosition());
+        }
 	}
 
 	@Override

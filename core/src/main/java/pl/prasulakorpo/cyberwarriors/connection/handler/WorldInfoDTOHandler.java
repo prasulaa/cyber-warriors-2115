@@ -16,9 +16,11 @@ import pl.prasulakorpo.cyberwarriors.model.PlayerFactory;
 
 import java.util.Map;
 
+import static pl.prasulakorpo.cyberwarriors.GameProperties.SERVER_TICKRATE;
+
 public class WorldInfoDTOHandler extends MessageHandler {
-    private static final float IMPULSE = 20f;
-    private static final float FLOAT_ERR = 4*1e-2f;
+    private static final float IMPULSE = SERVER_TICKRATE;
+    private static final float FLOAT_ERR = 0.00313f;
     private static final float TELEPORT_ERR = 1.5f;
 
     public WorldInfoDTOHandler(GameState gameState) {
@@ -66,54 +68,5 @@ public class WorldInfoDTOHandler extends MessageHandler {
             );
         }
     }
-
-    public static void main(String[] args) {
-        solveEquations();
-    }
-
-    public static void solveEquations() {
-        double[] x = {-3, 2, 10}; // Wartości x
-        double[] y = {-1, 3, 8}; // Wartości y
-
-        // Tworzenie macierzy A na podstawie wartości x^2, x i stałej
-        double[][] coefficients = new double[x.length][3];
-        for (int i = 0; i < x.length; i++) {
-            coefficients[i][0] = x[i] * x[i];
-            coefficients[i][1] = x[i];
-            coefficients[i][2] = 1;
-        }
-
-        RealMatrix A = new Array2DRowRealMatrix(coefficients, false);
-
-        // Tworzenie wektora b na podstawie wartości y
-        RealMatrix B = new Array2DRowRealMatrix(y);
-
-        // Rozwiązanie układu równań
-        DecompositionSolver solver = new LUDecomposition(A).getSolver();
-        RealMatrix solution = solver.solve(B);
-
-        // Otrzymane wartości a, b, c
-        double a = solution.getEntry(0, 0);
-        double b = solution.getEntry(1, 0);
-        double c = solution.getEntry(2, 0);
-
-        // Wyświetlanie wyników
-        System.out.println("a = " + a);
-        System.out.println("b = " + b);
-        System.out.println("c = " + c);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

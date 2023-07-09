@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import lombok.RequiredArgsConstructor;
 import pl.prasulakorpo.cyberwarriors.CyberWarriors;
-import pl.prasulakorpo.cyberwarriors.model.GameProperties;
+import pl.prasulakorpo.cyberwarriors.GameProperties;
 import pl.prasulakorpo.cyberwarriors.model.GameState;
 import pl.prasulakorpo.cyberwarriors.model.Player;
 
@@ -31,10 +31,12 @@ public class InputHandler extends InputListener {
         switch (keycode) {
             case Input.Keys.A -> {
                 isLeftPressed = true;
+                gameState.getPlayer().setDirectionLeft(true);
                 return true;
             }
             case Input.Keys.D -> {
                 isRightPressed = true;
+                gameState.getPlayer().setDirectionLeft(false);
                 return true;
             }
             case Input.Keys.SPACE -> {

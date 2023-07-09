@@ -38,6 +38,7 @@ public class PlayerFactory {
         fixtureDef.shape = shape;
         fixtureDef.density = 1f;
         fixtureDef.friction = 0.07f;
+        fixtureDef.restitution = 0f;
 
         Fixture fixture = body.createFixture(fixtureDef);
         shape.dispose();

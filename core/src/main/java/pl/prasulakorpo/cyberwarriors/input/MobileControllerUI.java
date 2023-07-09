@@ -2,7 +2,6 @@ package pl.prasulakorpo.cyberwarriors.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
@@ -11,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import static pl.prasulakorpo.cyberwarriors.model.GameProperties.HEIGHT;
-import static pl.prasulakorpo.cyberwarriors.model.GameProperties.WIDTH;
+import static pl.prasulakorpo.cyberwarriors.GameProperties.HEIGHT;
+import static pl.prasulakorpo.cyberwarriors.GameProperties.WIDTH;
 import static pl.prasulakorpo.cyberwarriors.model.TexturePaths.*;
 import static pl.prasulakorpo.cyberwarriors.model.TexturePaths.BUTTON_B_CLICKED;
 
@@ -24,7 +23,7 @@ public class MobileControllerUI {
         stage.addListener(inputListener);
         Table table = new Table();
         table.setSize(WIDTH, HEIGHT*1/3);
-        table.setDebug(true);
+//        table.setDebug(true);
 
 
         Table tableLeft = createSmallButtonPanel(

@@ -3,13 +3,12 @@ package pl.prasulakorpo.cyberwarriors.connection;
 import com.badlogic.gdx.math.Vector2;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.java_websocket.client.WebSocketClient;
 import pl.prasulakorpo.cyberwarriors.connection.message.PlayerStateDTO;
 import pl.prasulakorpo.cyberwarriors.model.Player;
 
-import static pl.prasulakorpo.cyberwarriors.model.GameProperties.SERVER_TICKRATE;
+import static pl.prasulakorpo.cyberwarriors.GameProperties.SERVER_TICKRATE;
 
 @RequiredArgsConstructor
 public class MessageSender {

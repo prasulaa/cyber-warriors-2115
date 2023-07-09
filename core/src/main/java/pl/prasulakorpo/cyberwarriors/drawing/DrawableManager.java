@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.prasulakorpo.cyberwarriors.model.GameProperties.PPM;
+import static pl.prasulakorpo.cyberwarriors.GameProperties.PPM;
 
 public class DrawableManager {
 

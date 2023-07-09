@@ -5,17 +5,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.FrictionJoint;
-import com.badlogic.gdx.physics.box2d.joints.FrictionJointDef;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import pl.prasulakorpo.cyberwarriors.drawing.Drawable;
 
-import java.util.Objects;
-
-import static pl.prasulakorpo.cyberwarriors.model.GameProperties.ERR;
-import static pl.prasulakorpo.cyberwarriors.model.GameProperties.PPM;
+import static pl.prasulakorpo.cyberwarriors.GameProperties.ERR;
 
 @RequiredArgsConstructor
 public class Player implements Drawable {
@@ -26,7 +21,7 @@ public class Player implements Drawable {
     private final Fixture fixture;
     private final FrictionJoint frictionJoint;
     private final PlayerAnimations animations;
-    @Getter
+    @Setter
     private boolean directionLeft;
     @Getter
     @Setter
@@ -58,6 +53,11 @@ public class Player implements Drawable {
 
     public Vector2 getSize() {
         return new Vector2(0.5f, 0.5f);
+    }
+
+    public boolean isDirectionLeft() {
+        updateDirection(fixture.getBody().getLinearVelocity());
+        return directionLeft;
     }
 
     private void updateDirection(Vector2 velocity) {

@@ -9,18 +9,18 @@ public class StaticObjectPlayerCollisionHandler implements CollisionHandler {
 
     @Override
     public void handleBeginContact(Contact contact) {
-        if (contact.getFixtureA().getUserData() instanceof Player){
+        if (contact.getFixtureA().getUserData() instanceof Player && contact.getFixtureB().getUserData() instanceof StaticObject) {
             handleBeginContact((Player) contact.getFixtureA().getUserData(), (StaticObject) contact.getFixtureB().getUserData());
-        } else {
+        } else if (contact.getFixtureA().getUserData() instanceof StaticObject && contact.getFixtureB().getUserData() instanceof Player){
             handleBeginContact((Player) contact.getFixtureB().getUserData(), (StaticObject) contact.getFixtureA().getUserData());
         }
     }
 
     @Override
     public void handleEndContact(Contact contact) {
-        if (contact.getFixtureA().getUserData() instanceof Player){
+        if (contact.getFixtureA().getUserData() instanceof Player && contact.getFixtureB().getUserData() instanceof StaticObject) {
             handleEndContact((Player) contact.getFixtureA().getUserData(), (StaticObject) contact.getFixtureB().getUserData());
-        } else {
+        } else if (contact.getFixtureA().getUserData() instanceof StaticObject && contact.getFixtureB().getUserData() instanceof Player){
             handleEndContact((Player) contact.getFixtureB().getUserData(), (StaticObject) contact.getFixtureA().getUserData());
         }
     }
