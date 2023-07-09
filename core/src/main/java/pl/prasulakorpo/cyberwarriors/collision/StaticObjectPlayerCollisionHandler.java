@@ -42,6 +42,8 @@ public class StaticObjectPlayerCollisionHandler implements CollisionHandler {
         Vector2 playerSize = player.getSize();
         Vector2 staticSize = staticObject.getPosition();
 
+        player.setSecondJumpAvailable(true);
+
         if (Math.abs(staticPos.y - playerPos.y) <  playerSize.y + staticSize.y) {
             player.setOnWall(false);
         }

@@ -26,6 +26,9 @@ public class Player implements Drawable {
     @Getter
     @Setter
     private boolean onWall;
+    @Getter
+    @Setter
+    private boolean secondJumpAvailable;
 
     @Override
     public Vector2 getPosition() {

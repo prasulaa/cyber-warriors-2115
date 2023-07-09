@@ -16,6 +16,7 @@ public class InputHandler extends InputListener {
 
     private static final float MOVE_IMPULSE = 0.5f;
     private static final float JUMP_IMPULSE = 9f;
+    private static final float SECOND_JUMP_IMPULSE = 5f;
     private static final float JUMP_HIGHER_IMPULSE = 0.4f;
     private static final float JUMP_ON_WALL = 4.5f;
     private static final float MAX_VELOCITY = 5f;
@@ -105,10 +106,11 @@ public class InputHandler extends InputListener {
             } else {
                 body.setLinearVelocity(-JUMP_ON_WALL, JUMP_IMPULSE);
             }
-        }
-
-        if (Math.abs(body.getLinearVelocity().y) < GameProperties.ERR) {
+        } else if (Math.abs(body.getLinearVelocity().y) < GameProperties.ERR) {
             body.setLinearVelocity(0, JUMP_IMPULSE);
+        } else if (player.isSecondJumpAvailable()) {
+            body.setLinearVelocity(body.getLinearVelocity().x, SECOND_JUMP_IMPULSE);
+            player.setSecondJumpAvailable(false);
         }
     }
 

@@ -94,11 +94,6 @@ public class CyberWarriors extends ApplicationAdapter {
 
     @Override
 	public void render () {
-        Map.Entry<String, Player> e = gameState.getPlayers().entrySet().stream().findFirst().orElse(null);
-        if (e != null) {
-            System.out.println(e.getValue().getFixture().getBody().getLinearVelocity() + " - " + e.getValue().getFixture().getBody().getPosition());
-        }
-
 		gameState.updateStateTime(Gdx.graphics.getDeltaTime());
 
 		// GRAPHICS
@@ -109,7 +104,7 @@ public class CyberWarriors extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-//        gameState.getDrawableManager().draw(batch, gameState.getStateTime());
+        gameState.getDrawableManager().draw(batch, gameState.getStateTime());
 		batch.end();
 
         debugRenderer.render(gameState.getWorld(), camera.combined.scl(PPM));
@@ -126,10 +121,6 @@ public class CyberWarriors extends ApplicationAdapter {
 
         // COMMUNICATION
         messageSender.sendPlayerState(gameState.getPlayer());
-
-        if (e != null) {
-            System.out.println(e.getValue().getFixture().getBody().getLinearVelocity() + " - " + e.getValue().getFixture().getBody().getPosition());
-        }
 	}
 
 	@Override
