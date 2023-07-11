@@ -107,7 +107,7 @@ public class InputHandler extends InputListener {
                 body.setLinearVelocity(-JUMP_ON_WALL, JUMP_IMPULSE);
             }
         } else if (Math.abs(body.getLinearVelocity().y) < GameProperties.ERR) {
-            body.setLinearVelocity(0, JUMP_IMPULSE);
+            body.setLinearVelocity(body.getLinearVelocity().x, JUMP_IMPULSE);
         } else if (player.isSecondJumpAvailable()) {
             body.setLinearVelocity(body.getLinearVelocity().x, SECOND_JUMP_IMPULSE);
             player.setSecondJumpAvailable(false);

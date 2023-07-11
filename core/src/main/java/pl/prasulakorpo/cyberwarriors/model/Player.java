@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.FrictionJoint;
+import com.badlogic.gdx.utils.Disposable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import pl.prasulakorpo.cyberwarriors.drawing.Drawable;
 import static pl.prasulakorpo.cyberwarriors.GameProperties.ERR;
 
 @RequiredArgsConstructor
-public class Player implements Drawable {
+public class Player implements Drawable, Disposable {
 
     @Getter
     private final String id;
@@ -55,6 +56,11 @@ public class Player implements Drawable {
         return animation.getKeyFrame(stateTime);
     }
 
+    @Override
+    public void dispose() {
+        animations.dispose();
+    }
+
     public Vector2 getSize() {
         return new Vector2(0.5f, 0.5f);
     }
@@ -83,5 +89,4 @@ public class Player implements Drawable {
     public int hashCode() {
         return id.hashCode();
     }
-
 }

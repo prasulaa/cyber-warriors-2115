@@ -53,6 +53,7 @@ public class WorldInfoDTOHandler extends MessageHandler {
                 gameState.getWorld().destroyJoint(p.getFrictionJoint());
                 gameState.getWorld().destroyBody(p.getFixture().getBody());
                 gameState.getDrawableManager().delete(p);
+                p.dispose();
             });
     }
 
