@@ -16,27 +16,25 @@ import static pl.prasulakorpo.cyberwarriors.model.TexturePaths.*;
 import static pl.prasulakorpo.cyberwarriors.model.TexturePaths.BUTTON_B_CLICKED;
 
 public class MobileControllerUI {
+    private static final boolean DEBUG = false;
 
     public static Stage createStage(InputListener inputListener) {
-        boolean debug = false;
         Stage stage = new Stage(new FitViewport(WIDTH, HEIGHT));
         stage.addListener(inputListener);
         Table table = new Table();
         table.setSize(WIDTH, HEIGHT*1/3);
-//        table.setDebug(true);
+        table.setDebug(DEBUG);
 
 
         Table tableLeft = createSmallButtonPanel(
             BUTTON_LEFT, BUTTON_LEFT_CLICKED, inputListener(inputListener, Input.Keys.A),
             BUTTON_RIGHT, BUTTON_RIGHT_CLICKED, inputListener(inputListener, Input.Keys.D),
-            BUTTON_DOWN, BUTTON_DOWN_CLICKED, inputListener(inputListener, Input.Keys.S),
-            debug);
+            BUTTON_DOWN, BUTTON_DOWN_CLICKED, inputListener(inputListener, Input.Keys.S));
 
         Table tableRight = createSmallButtonPanel(
             BUTTON_A, BUTTON_A_CLICKED, inputListener(inputListener, 0),
             BUTTON_C, BUTTON_C_CLICKED, inputListener(inputListener, 0),
-            BUTTON_B, BUTTON_B_CLICKED, inputListener(inputListener, Input.Keys.SPACE),
-            debug);
+            BUTTON_B, BUTTON_B_CLICKED, inputListener(inputListener, Input.Keys.SPACE));
 
         table.add(tableLeft).size(WIDTH/4, HEIGHT*1/3).left();
         table.add(new Table()).expand();
@@ -48,10 +46,9 @@ public class MobileControllerUI {
 
     private static Table createSmallButtonPanel(String pathBut1, String pathBut1Click, EventListener eventListener1,
                                                 String pathBut2, String pathBut2Click, EventListener eventListener2,
-                                                String pathBut3, String pathBut3Click, EventListener eventListener3,
-                                                boolean debug) {
+                                                String pathBut3, String pathBut3Click, EventListener eventListener3) {
         Table table = new Table();
-        table.setDebug(debug);
+        table.setDebug(DEBUG);
 
         table.add(createButton(pathBut1, pathBut1Click, eventListener1)).expand();
         table.add(createButton(pathBut2, pathBut2Click, eventListener2)).expand();
@@ -65,8 +62,11 @@ public class MobileControllerUI {
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
         style.up = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(pathUp))));
         style.down = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(pathDown))));
+
         ImageButton imageButton = new ImageButton(style);
         imageButton.addListener(eventListener);
+        imageButton.setDebug(DEBUG);
+
         return imageButton;
     }
 

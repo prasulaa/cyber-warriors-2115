@@ -46,7 +46,7 @@ public class WorldInfoDTOHandler extends MessageHandler {
 
         players.entrySet().stream()
             .filter(e -> worldInfo.getPlayers().stream().noneMatch(p -> p.getId().equals(e.getValue().getId())))
-            .toList()
+            .collect(Collectors.toList())
             .forEach(e -> {
                 Player p = e.getValue();
                 players.remove(e.getKey());
