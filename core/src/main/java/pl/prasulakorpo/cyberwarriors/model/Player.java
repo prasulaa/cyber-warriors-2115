@@ -19,6 +19,7 @@ public class Player implements Drawable {
     private final String id;
     @Getter
     private final Fixture fixture;
+    @Getter
     private final FrictionJoint frictionJoint;
     private final PlayerAnimations animations;
     @Setter

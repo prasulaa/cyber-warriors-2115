@@ -24,6 +24,8 @@ import pl.prasulakorpo.cyberwarriors.model.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map;
 
 import static pl.prasulakorpo.cyberwarriors.GameProperties.*;
@@ -64,7 +66,7 @@ public class CyberWarriors extends ApplicationAdapter {
         gameState.setWorld(world);
 		debugRenderer = new Box2DDebugRenderer();
 
-        gameState.setDrawableManager(new DrawableManager());
+        gameState.setDrawableManager(new DrawableManager(new LinkedList<>()));
 
         try {
             URI uri = new URI("ws://192.168.1.67:8080/servers/" + SERVER_ID);

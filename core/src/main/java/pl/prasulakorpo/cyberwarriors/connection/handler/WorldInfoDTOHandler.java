@@ -15,6 +15,7 @@ import pl.prasulakorpo.cyberwarriors.model.Player;
 import pl.prasulakorpo.cyberwarriors.model.PlayerFactory;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static pl.prasulakorpo.cyberwarriors.GameProperties.SERVER_TICKRATE;
 
@@ -42,6 +43,17 @@ public class WorldInfoDTOHandler extends MessageHandler {
                 initPlayer(playerDTO, players);
             }
         });
+
+        players.entrySet().stream()
+            .filter(e -> worldInfo.getPlayers().stream().noneMatch(p -> p.getId().equals(e.getValue().getId())))
+            .toList()
+            .forEach(e -> {
+                Player p = e.getValue();
+                players.remove(e.getKey());
+                gameState.getWorld().destroyJoint(p.getFrictionJoint());
+                gameState.getWorld().destroyBody(p.getFixture().getBody());
+                gameState.getDrawableManager().delete(p);
+            });
     }
 
     private void initPlayer(PlayerDTO playerDTO, Map<String, Player> players) {
