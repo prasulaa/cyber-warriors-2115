@@ -128,11 +128,18 @@ public class InputHandler extends InputListener {
         }
 
         Body body = gameState.getPlayer().getFixture().getBody();
-        body.applyLinearImpulse(new Vector2(impulse, 0), body.getPosition(), true);
-
         Vector2 velocity = body.getLinearVelocity();
-        if (velocity.x < -MAX_VELOCITY) {
-            body.setLinearVelocity(-MAX_VELOCITY, velocity.y);
+
+        float ratio = Math.abs(velocity.y) > ERR ? MOVE_IN_AIR_RATIO : 1f;
+        float velocityRatio = Math.abs(velocity.y) > ERR ? MAX_VELOCITY_IN_AIR_RATIO : 1f;
+        float velX = velocity.x + ratio*impulse;
+
+        if (Math.abs(velX) < MAX_VELOCITY) {
+            body.applyLinearImpulse(new Vector2(ratio*impulse, 0), body.getPosition(), true);
+        } else if (velX < -MAX_VELOCITY * velocityRatio && impulse > 0) {
+            body.applyLinearImpulse(new Vector2(ratio*impulse, 0), body.getPosition(), true);
+        } else if (velX > MAX_VELOCITY * velocityRatio && impulse < 0) {
+            body.applyLinearImpulse(new Vector2(ratio * impulse, 0), body.getPosition(), true);
         }
         if (velocity.x > MAX_VELOCITY) {
             body.setLinearVelocity(MAX_VELOCITY, velocity.y);
