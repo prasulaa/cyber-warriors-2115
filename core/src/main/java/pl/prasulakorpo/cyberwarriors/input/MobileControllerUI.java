@@ -27,13 +27,13 @@ public class MobileControllerUI {
 
 
         Table tableLeft = createSmallButtonPanel(
-            BUTTON_LEFT, BUTTON_LEFT_CLICKED, inputListener(inputListener, Input.Keys.A),
-            BUTTON_RIGHT, BUTTON_RIGHT_CLICKED, inputListener(inputListener, Input.Keys.D),
-            BUTTON_DOWN, BUTTON_DOWN_CLICKED, inputListener(inputListener, Input.Keys.S));
+            BUTTON_LEFT, BUTTON_LEFT_CLICKED, inputListener(inputListener, Input.Keys.LEFT),
+            BUTTON_RIGHT, BUTTON_RIGHT_CLICKED, inputListener(inputListener, Input.Keys.RIGHT),
+            BUTTON_DOWN, BUTTON_DOWN_CLICKED, inputListener(inputListener, Input.Keys.DOWN));
 
         Table tableRight = createSmallButtonPanel(
-            BUTTON_A, BUTTON_A_CLICKED, inputListener(inputListener, 0),
-            BUTTON_C, BUTTON_C_CLICKED, inputListener(inputListener, 0),
+            BUTTON_A, BUTTON_A_CLICKED, inputListener(inputListener, Input.Keys.Z),
+            BUTTON_C, BUTTON_C_CLICKED, inputListener(inputListener, Input.Keys.C),
             BUTTON_B, BUTTON_B_CLICKED, inputListener(inputListener, Input.Keys.SPACE));
 
         table.add(tableLeft).size(WIDTH/4, HEIGHT*1/3).left();

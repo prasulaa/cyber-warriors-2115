@@ -17,7 +17,7 @@ public class StaticObjectFactory {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 2f;
-        fixtureDef.friction = 0.07f;
+        fixtureDef.friction = 0.1f;
         fixtureDef.restitution = 0f;
         Fixture fixture = groundBody.createFixture(fixtureDef);
         fixture.setSensor(isSensor);

@@ -115,6 +115,11 @@ public class CyberWarriors extends ApplicationAdapter {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
+        // RENDERABLE
+        if (gameState.getPlayer() != null) {
+            gameState.getPlayer().render();
+        }
+
         // INPUT
         inputHandler.handlePressedKeys();
 

@@ -16,6 +16,8 @@ import static pl.prasulakorpo.cyberwarriors.GameProperties.ERR;
 @RequiredArgsConstructor
 public class Player implements Drawable, Disposable {
 
+    public static final long DASH_DURATION = 300;
+
     @Getter
     private final String id;
     @Getter
@@ -31,6 +33,9 @@ public class Player implements Drawable, Disposable {
     @Getter
     @Setter
     private boolean secondJumpAvailable;
+    @Getter
+    @Setter
+    private long lastDashTime;
 
     @Override
     public Vector2 getPosition() {
@@ -59,6 +64,12 @@ public class Player implements Drawable, Disposable {
     @Override
     public void dispose() {
         animations.dispose();
+    }
+
+    public void render() {
+        if (System.currentTimeMillis() - lastDashTime > DASH_DURATION) {
+            fixture.getBody().setGravityScale(1f);
+        }
     }
 
     public Vector2 getSize() {
