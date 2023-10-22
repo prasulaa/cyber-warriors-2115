@@ -12,10 +12,14 @@ public class PlayerFactory {
         Body body = createBody(x, y, gameState.getWorld());
         body.setFixedRotation(true);
 
-        return new Player(id,
+        Player player = new Player(id,
             createFixture(body),
-            createFrictionJoint(body, gameState.getBackground().getBody(), gameState.getWorld()),
+            createFrictionJoint(body, gameState.getBackground().getFixture().getBody(), gameState.getWorld()),
             loadAnimations());
+
+        player.getFixture().setUserData(player);
+
+        return player;
     }
 
     private static Body createBody(float x, float y, World world) {
@@ -33,6 +37,8 @@ public class PlayerFactory {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1f;
+        fixtureDef.friction = 0.07f;
+        fixtureDef.restitution = 0f;
 
         Fixture fixture = body.createFixture(fixtureDef);
         shape.dispose();
@@ -41,8 +47,8 @@ public class PlayerFactory {
 
     private static FrictionJoint createFrictionJoint(Body body1, Body body2, World world) {
         FrictionJointDef jointDef = new FrictionJointDef();
-        jointDef.maxForce = 1f;
-        jointDef.maxTorque = 1f;
+        jointDef.maxForce = 10f;
+        jointDef.maxTorque = 10f;
         jointDef.initialize(body1, body2, new Vector2(0, 0));
         return (FrictionJoint) world.createJoint(jointDef);
     }

@@ -3,15 +3,17 @@ package pl.prasulakorpo.cyberwarriors.drawing;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.prasulakorpo.cyberwarriors.model.GameProperties.PPM;
+import static pl.prasulakorpo.cyberwarriors.GameProperties.PPM;
 
+@AllArgsConstructor
 public class DrawableManager {
 
-    private List<Drawable> drawables = new ArrayList<>();
+    private final List<Drawable> drawables;
 
     public void add(Drawable drawable) {
         drawables.add(drawable);

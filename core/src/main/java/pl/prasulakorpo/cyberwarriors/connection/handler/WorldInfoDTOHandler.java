@@ -2,6 +2,10 @@ package pl.prasulakorpo.cyberwarriors.connection.handler;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.DecompositionSolver;
+import org.apache.commons.math3.linear.LUDecomposition;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.java_websocket.client.WebSocketClient;
 import pl.prasulakorpo.cyberwarriors.connection.message.GeneralMsg;
 import pl.prasulakorpo.cyberwarriors.connection.message.PlayerDTO;
@@ -11,10 +15,13 @@ import pl.prasulakorpo.cyberwarriors.model.Player;
 import pl.prasulakorpo.cyberwarriors.model.PlayerFactory;
 
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static pl.prasulakorpo.cyberwarriors.GameProperties.SERVER_TICKRATE;
 
 public class WorldInfoDTOHandler extends MessageHandler {
-    private static final float IMPULSE = 20f;
-    private static final float FLOAT_ERR = 4*1e-2f;
+    private static final float IMPULSE = SERVER_TICKRATE;
+    private static final float FLOAT_ERR = 0.00313f;
     private static final float TELEPORT_ERR = 1.5f;
 
     public WorldInfoDTOHandler(GameState gameState) {
@@ -36,6 +43,18 @@ public class WorldInfoDTOHandler extends MessageHandler {
                 initPlayer(playerDTO, players);
             }
         });
+
+        players.entrySet().stream()
+            .filter(e -> worldInfo.getPlayers().stream().noneMatch(p -> p.getId().equals(e.getValue().getId())))
+            .collect(Collectors.toList())
+            .forEach(e -> {
+                Player p = e.getValue();
+                players.remove(e.getKey());
+                gameState.getWorld().destroyJoint(p.getFrictionJoint());
+                gameState.getWorld().destroyBody(p.getFixture().getBody());
+                gameState.getDrawableManager().delete(p);
+                p.dispose();
+            });
     }
 
     private void initPlayer(PlayerDTO playerDTO, Map<String, Player> players) {

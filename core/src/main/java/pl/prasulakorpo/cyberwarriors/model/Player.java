@@ -5,26 +5,37 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.FrictionJoint;
-import com.badlogic.gdx.physics.box2d.joints.FrictionJointDef;
-import lombok.AllArgsConstructor;
+import com.badlogic.gdx.utils.Disposable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import pl.prasulakorpo.cyberwarriors.drawing.Drawable;
 
-import java.util.Objects;
-
-import static pl.prasulakorpo.cyberwarriors.model.GameProperties.ERR;
+import static pl.prasulakorpo.cyberwarriors.GameProperties.ERR;
 
 @RequiredArgsConstructor
-public class Player implements Drawable {
+public class Player implements Drawable, Disposable {
+
+    public static final long DASH_DURATION = 300;
 
     @Getter
     private final String id;
     @Getter
     private final Fixture fixture;
+    @Getter
     private final FrictionJoint frictionJoint;
     private final PlayerAnimations animations;
+    @Setter
     private boolean directionLeft;
+    @Getter
+    @Setter
+    private boolean onWall;
+    @Getter
+    @Setter
+    private boolean secondJumpAvailable;
+    @Getter
+    @Setter
+    private long lastDashTime;
 
     @Override
     public Vector2 getPosition() {
@@ -51,15 +62,23 @@ public class Player implements Drawable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        return id.equals(((Player) o).getId());
+    public void dispose() {
+        animations.dispose();
     }
 
-    @Override
-    public int hashCode() {
-        return id.hashCode();
+    public void render() {
+        if (System.currentTimeMillis() - lastDashTime > DASH_DURATION) {
+            fixture.getBody().setGravityScale(1f);
+        }
+    }
+
+    public Vector2 getSize() {
+        return new Vector2(0.5f, 0.5f);
+    }
+
+    public boolean isDirectionLeft() {
+        updateDirection(fixture.getBody().getLinearVelocity());
+        return directionLeft;
     }
 
     private void updateDirection(Vector2 velocity) {
@@ -70,4 +89,15 @@ public class Player implements Drawable {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return id.equals(((Player) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }
