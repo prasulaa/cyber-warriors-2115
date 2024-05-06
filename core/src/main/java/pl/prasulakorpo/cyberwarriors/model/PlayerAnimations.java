@@ -16,10 +16,8 @@ public class PlayerAnimations implements Disposable {
     private final Animation<TextureRegion> standingPoseRight;
     private final Animation<TextureRegion> runLeft;
     private final Animation<TextureRegion> runRight;
-    private final Animation<TextureRegion> jumpUpLeft;
-    private final Animation<TextureRegion> jumpUpRight;
-    private final Animation<TextureRegion> jumpDownLeft;
-    private final Animation<TextureRegion> jumpDownRight;
+    private final Animation<TextureRegion> attackLeft;
+    private final Animation<TextureRegion> attackRight;
 
     @Override
     public void dispose() {
@@ -27,10 +25,8 @@ public class PlayerAnimations implements Disposable {
         dispose(standingPoseRight.getKeyFrames());
         dispose(runLeft.getKeyFrames());
         dispose(runRight.getKeyFrames());
-        dispose(jumpUpLeft.getKeyFrames());
-        dispose(jumpUpRight.getKeyFrames());
-        dispose(jumpDownLeft.getKeyFrames());
-        dispose(jumpUpRight.getKeyFrames());
+        dispose(attackLeft.getKeyFrames());
+        dispose(attackRight.getKeyFrames());
     }
 
     private void dispose(TextureRegion[] regions) {

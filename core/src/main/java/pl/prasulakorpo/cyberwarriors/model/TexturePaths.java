@@ -2,27 +2,26 @@ package pl.prasulakorpo.cyberwarriors.model;
 
 public class TexturePaths {
 
-    // UI
-    public static final String BUTTON_A = "ui/BUTTON_A.png";
-    public static final String BUTTON_A_CLICKED = "ui/BUTTON_A_CLICKED.png";
-    public static final String BUTTON_B = "ui/BUTTON_B.png";
-    public static final String BUTTON_B_CLICKED = "ui/BUTTON_B_CLICKED.png";
-    public static final String BUTTON_C = "ui/BUTTON_C.png";
-    public static final String BUTTON_C_CLICKED = "ui/BUTTON_C_CLICKED.png";
-    public static final String BUTTON_LEFT = "ui/BUTTON_LEFT.png";
-    public static final String BUTTON_LEFT_CLICKED = "ui/BUTTON_LEFT_CLICKED.png";
-    public static final String BUTTON_RIGHT = "ui/BUTTON_RIGHT.png";
-    public static final String BUTTON_RIGHT_CLICKED = "ui/BUTTON_RIGHT_CLICKED.png";
-    public static final String BUTTON_DOWN = "ui/BUTTON_DOWN.png";
-    public static final String BUTTON_DOWN_CLICKED = "ui/BUTTON_DOWN_CLICKED.png";
-
     // PLAYER
-    public static final String STANDING_POSE_LEFT = "player/STANDING_POSE_LEFT.png";
-    public static final String STANDING_POSE_RIGHT = "player/STANDING_POSE_RIGHT.png";
-    public static final String RUN_LEFT = "player/RUN_LEFT.png";
-    public static final String RUN_RIGHT = "player/RUN_RIGHT.png";
-    public static final String JUMP_UP_LEFT = "player/JUMP_UP_LEFT.png";
-    public static final String JUMP_UP_RIGHT = "player/JUMP_UP_RIGHT.png";
-    public static final String JUMP_DOWN_LEFT = "player/JUMP_DOWN_LEFT.png";
-    public static final String JUMP_DOWN_RIGHT = "player/JUMP_DOWN_RIGHT.png";
+    public static final String C1_STANDING_POSE_LEFT = "C_STAND_LEFT.png";
+    public static final String C1_STANDING_POSE_RIGHT = "C_STAND_RIGHT.png";
+    public static final String C1_RUN_LEFT = "C_RUN_LEFT.png";
+    public static final String C1_RUN_RIGHT = "C_RUN_RIGHT.png";
+    public static final String C1_ATTACK_RIGHT = "C_ATTACK_RIGHT.png";
+    public static final String C1_ATTACK_LEFT = "C_ATTACK_LEFT.png";
+    public static final String C2_STANDING_POSE_LEFT = "C2_STAND_LEFT.png";
+    public static final String C2_STANDING_POSE_RIGHT = "C2_STAND_RIGHT.png";
+    public static final String C2_RUN_LEFT = "C2_RUN_LEFT.png";
+    public static final String C2_RUN_RIGHT = "C2_RUN_RIGHT.png";
+    public static final String C2_ATTACK_RIGHT = "C2_ATTACK_RIGHT.png";
+    public static final String C2_ATTACK_LEFT = "C2_ATTACK_LEFT.png";
+
+    public static final String MAP = "MAP_005.png";
+    public static final String BIRDS = "BIRDS.png";
+    public static final String S1_WALK_LEFT = "S_WALK_LEFT.png";
+    public static final String S1_DEATH_LEFT = "S_DEATH_LEFT.png";
+    public static final String S2_WALK_LEFT = "S2_WALK_LEFT.png";
+    public static final String S2_DEATH_LEFT = "S2_DEATH_LEFT.png";
+    public static final String T1_ATTACK = "T1_ATTACK.png";
+    public static final String T1_STAND = "T1_STAND.png";
 }

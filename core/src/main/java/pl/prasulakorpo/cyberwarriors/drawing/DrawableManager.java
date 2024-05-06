@@ -19,6 +19,14 @@ public class DrawableManager {
         drawables.add(drawable);
     }
 
+    public void add(int i, Drawable drawable) {
+        drawables.add(i, drawable);
+    }
+
+    public void addOnEnd(Drawable drawable) {
+        drawables.add(drawables.size() - 1, drawable);
+    }
+
     public void delete(Drawable drawable) {
         drawables.remove(drawable);
     }

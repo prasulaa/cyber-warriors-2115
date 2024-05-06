@@ -1,82 +1,69 @@
 package pl.prasulakorpo.cyberwarriors.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import lombok.RequiredArgsConstructor;
-import pl.prasulakorpo.cyberwarriors.CyberWarriors;
-import pl.prasulakorpo.cyberwarriors.model.GameState;
-import pl.prasulakorpo.cyberwarriors.model.Player;
+import pl.prasulakorpo.cyberwarriors.model.*;
 
-import static pl.prasulakorpo.cyberwarriors.GameProperties.ERR;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
-public class InputHandler extends InputListener {
+public class InputHandler implements InputProcessor {
 
-    private static final float MOVE_IMPULSE = 0.6f;
-    private static final float MOVE_IN_AIR_RATIO = 0.5f;
-    private static final float JUMP_IMPULSE = 9f;
-    private static final float SECOND_JUMP_IMPULSE = 5f;
-    private static final float JUMP_HIGHER_IMPULSE = 0.4f;
-    private static final float JUMP_ON_WALL = 4.5f;
+    private final Sound attackSound = Gdx.audio.newSound(Gdx.files.internal("assets/atak.wav"));
+    private static final float MOVE_IMPULSE = 1f;
     public static final float MAX_VELOCITY = 5f;
-    private static final float MAX_VELOCITY_IN_AIR_RATIO = 1f;
-    private static final float DASH_VELOCITY = 10f;
-    private static final long JUMP_COOLDOWN_AFTER = 500;
-    private static final long DASH_COOLDOWN = 4000;
 
     private final GameState gameState;
 
-    private boolean isLeftPressed, isRightPressed, isJumpPressed;
-    private long lastTimeJump = System.currentTimeMillis();
-
     @Override
-    public boolean keyDown(InputEvent event, int keycode) {
+    public boolean keyDown(int keycode) {
         switch (keycode) {
-            case Input.Keys.LEFT -> {
-                isLeftPressed = true;
-                gameState.getPlayer().setDirectionLeft(true);
-                return true;
-            }
-            case Input.Keys.RIGHT -> {
-                isRightPressed = true;
-                gameState.getPlayer().setDirectionLeft(false);
-                return true;
-            }
-            case Input.Keys.SPACE -> {
-                jumpImpulse();
-                lastTimeJump = System.currentTimeMillis();
-                isJumpPressed = true;
-                return true;
-            }
-            case Input.Keys.Z -> {
-                dash();
-                return true;
-            }
+            case Input.Keys.BACKSLASH -> attack(gameState.getPlayer1());
+            case Input.Keys.SHIFT_LEFT -> attack(gameState.getPlayer2());
+//            case Input.Keys.SPACE -> attack(gameState.getPlayer3());
         }
 
+        return true;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return true;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
         return false;
     }
 
     @Override
-    public boolean keyUp(InputEvent event, int keycode) {
-        switch (keycode) {
-            case Input.Keys.LEFT -> {
-                isLeftPressed = false;
-                return true;
-            }
-            case Input.Keys.RIGHT -> {
-                isRightPressed = false;
-                return true;
-            }
-            case Input.Keys.SPACE -> {
-                isJumpPressed = false;
-                return true;
-            }
-        }
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
 
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
         return false;
     }
 
@@ -84,85 +71,79 @@ public class InputHandler extends InputListener {
      * Checks if certain keys are pressed and if so handles them
      */
     public void handlePressedKeys() {
-        if (isLeftPressed) {
-            moveLeft();
+        // PLAYER 1
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            move(-MOVE_IMPULSE, 0, gameState.getPlayer1());
         }
-        if (isRightPressed) {
-            moveRight();
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            move(MOVE_IMPULSE, 0, gameState.getPlayer1());
         }
-        if (isJumpPressed) {
-            jumpHigher();
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            move(0, MOVE_IMPULSE, gameState.getPlayer1());
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            move(0, -MOVE_IMPULSE, gameState.getPlayer1());
+        }
+
+        // PLAYER 2
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            move(-MOVE_IMPULSE, 0, gameState.getPlayer2());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            move(MOVE_IMPULSE, 0, gameState.getPlayer2());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            move(0, MOVE_IMPULSE, gameState.getPlayer2());
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            move(0, -MOVE_IMPULSE, gameState.getPlayer2());
+        }
+
+        // PLAYER 3
+//        if (Gdx.input.isKeyPressed(Input.Keys.G)) {
+//            move(-MOVE_IMPULSE, 0, gameState.getPlayer3());
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.J)) {
+//            move(MOVE_IMPULSE, 0, gameState.getPlayer3());
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.Y)) {
+//            move(0, MOVE_IMPULSE, gameState.getPlayer3());
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.H)) {
+//            move(0, -MOVE_IMPULSE, gameState.getPlayer3());
+//        }
     }
 
-    private void jumpHigher() {
-        Body body = gameState.getPlayer().getFixture().getBody();
-        long now = System.currentTimeMillis();
-
-        if (body.getLinearVelocity().y > ERR && now - lastTimeJump < JUMP_COOLDOWN_AFTER) {
-            float ratio = CyberWarriors.getRatio() * (1 - (now - lastTimeJump) / (float) JUMP_COOLDOWN_AFTER);
-            body.applyLinearImpulse(0, ratio*JUMP_HIGHER_IMPULSE, body.getPosition().x, body.getPosition().y, true);
+    private void attack(Player player) {
+        if (player.isAttackCooldown(gameState.getStateTime())) {
+            return;
         }
-    }
+        List<Skeleton> skeletonsToDelete = new ArrayList<>();
 
-    private void jumpImpulse() {
-        Player player = gameState.getPlayer();
-        Body body = player.getFixture().getBody();
+        gameState.getSkeletons().stream()
+                .forEach(s -> {if (player.attackOverlaps(s)) skeletonsToDelete.add(s);});
 
-        if (gameState.getPlayer().isOnWall()) {
-            if (player.isDirectionLeft()) {
-                body.setLinearVelocity(JUMP_ON_WALL, JUMP_IMPULSE);
-            } else {
-                body.setLinearVelocity(-JUMP_ON_WALL, JUMP_IMPULSE);
-            }
-        } else if (Math.abs(body.getLinearVelocity().y) < ERR) {
-            body.setLinearVelocity(body.getLinearVelocity().x, JUMP_IMPULSE);
-        } else if (player.isSecondJumpAvailable()) {
-            body.setLinearVelocity(body.getLinearVelocity().x, SECOND_JUMP_IMPULSE);
-            player.setSecondJumpAvailable(false);
+        if (skeletonsToDelete.size() > 0) {
+            attackSound.play(1f);
+            skeletonsToDelete.forEach(s -> s.hit(gameState));
         }
+        player.setLastTimeAttacked(gameState.getStateTime());
     }
 
-    private void moveLeft() {
-        moveSide(CyberWarriors.getRatio() * -MOVE_IMPULSE);
-    }
-
-    private void moveRight() {
-        moveSide(CyberWarriors.getRatio() * MOVE_IMPULSE);
-    }
-
-    private void moveSide(float impulse) {
-        if (gameState.getPlayer() == null) {
+    private void move(float impulseX, float impulseY, Player player) {
+        if (player == null) {
             return;
         }
 
-        Body body = gameState.getPlayer().getFixture().getBody();
+        Body body = player.getFixture().getBody();
         Vector2 velocity = body.getLinearVelocity();
 
-        float ratio = Math.abs(velocity.y) > ERR ? MOVE_IN_AIR_RATIO : 1f;
-        float velocityRatio = Math.abs(velocity.y) > ERR ? MAX_VELOCITY_IN_AIR_RATIO : 1f;
-        float velX = velocity.x + ratio*impulse;
+        double velX = velocity.x + impulseX;
+        double velY = velocity.y + impulseY;
+        float vel = (float) Math.sqrt(velX*velX + velY*velY);
 
-        if (Math.abs(velX) < MAX_VELOCITY) {
-            body.applyLinearImpulse(new Vector2(ratio*impulse, 0), body.getPosition(), true);
-        } else if (velX < -MAX_VELOCITY * velocityRatio && impulse > 0) {
-            body.applyLinearImpulse(new Vector2(ratio*impulse, 0), body.getPosition(), true);
-        } else if (velX > MAX_VELOCITY * velocityRatio && impulse < 0) {
-            body.applyLinearImpulse(new Vector2(ratio * impulse, 0), body.getPosition(), true);
+        if (vel < MAX_VELOCITY) {
+            body.applyLinearImpulse(new Vector2(impulseX, impulseY), body.getPosition(), true);
         }
     }
-
-    private void dash() {
-        Player player = gameState.getPlayer();
-        long now = System.currentTimeMillis();
-
-        if (now - player.getLastDashTime() > DASH_COOLDOWN) {
-            player.setLastDashTime(now);
-            Body body = player.getFixture().getBody();
-            body.setGravityScale(0f);
-
-            body.setLinearVelocity(player.isDirectionLeft() ? -DASH_VELOCITY : DASH_VELOCITY, 0);
-        }
-    }
-
 }
